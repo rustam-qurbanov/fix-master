@@ -1,0 +1,23 @@
+# env files
+.env
+.env.local
+*.env
+
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+*.pyc
+
+# Node / Next.js (frontend/.gitignore already covers most, this is a fallback)
+frontend/node_modules/
+frontend/.next/
+
+# gstack (vendored skill tooling, ~1GB, source of truth for .claude/skills/* symlinks)
+.gstack-src/
+.gbrain/
+
+# project-local Claude Code skills (symlinks into .gstack-src/, would dangle in other clones)
+.claude/
+skills-lock.json
+.DS_Store
