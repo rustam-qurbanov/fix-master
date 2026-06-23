@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function LoginPage() {
@@ -39,19 +40,25 @@ export default function LoginPage() {
   };
 
   const field =
-    "w-full border-0 border-b-2 border-ink/20 bg-transparent px-0 py-2 focus:border-signal focus:outline-none";
-  const label = "font-mono text-[11px] uppercase tracking-wider text-steel";
+    "w-full px-4 py-3 rounded-lg border border-slate-200 bg-white text-ink placeholder:text-steel/50 focus:border-signal focus:ring-2 focus:ring-signal/10 focus:outline-none transition duration-200";
+  const label = "block text-xs font-semibold uppercase tracking-wider text-steel mb-1.5";
 
   return (
-    <main className="mx-auto max-w-sm px-5 py-14">
-      <div className="ticket p-7 pt-9">
-        <h1 className="font-display text-2xl font-bold uppercase">Вход</h1>
-        <form onSubmit={submit} className="mt-5 flex flex-col gap-4">
+    <main className="mx-auto max-w-md px-5 py-16">
+      <div className="ticket p-8 shadow-sm">
+        <h1 className="font-display text-3xl font-extrabold tracking-tight text-ink text-center mb-1">
+          Вход
+        </h1>
+        <p className="text-center text-sm text-steel mb-6">
+          Войдите в свой личный кабинет FixMaster
+        </p>
+        <form onSubmit={submit} className="flex flex-col gap-5">
           <div>
             <label className={label}>Email</label>
             <input
               type="email"
               required
+              placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={field}
@@ -62,23 +69,33 @@ export default function LoginPage() {
             <input
               type="password"
               required
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={field}
             />
           </div>
           {error && (
-            <p className="font-mono text-sm text-signal">{error}</p>
+            <p className="text-sm font-medium text-rose-600 bg-rose-50 border border-rose-100 rounded-lg p-3">
+              {error}
+            </p>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 bg-ink py-2.5 font-display font-bold uppercase tracking-wide text-paper transition hover:bg-signal disabled:opacity-50"
+            className="mt-2 w-full bg-signal hover:bg-signal/90 text-white font-semibold py-3 px-4 rounded-lg shadow-sm hover:shadow transition duration-200 disabled:opacity-50"
           >
             {loading ? "Загрузка..." : "Войти"}
           </button>
         </form>
+        <div className="mt-6 text-center text-sm text-steel">
+          Еще нет аккаунта?{" "}
+          <Link href="/register" className="text-signal hover:underline font-medium">
+            Зарегистрироваться
+          </Link>
+        </div>
       </div>
     </main>
   );
 }
+

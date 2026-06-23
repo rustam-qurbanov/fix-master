@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { PT_Sans_Narrow, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { NavBar } from "@/components/NavBar";
 import "./globals.css";
 
-const display = PT_Sans_Narrow({
+const display = Plus_Jakarta_Sans({
   variable: "--font-display",
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "700"],
+  subsets: ["latin"],
+  weight: ["700", "800"],
 });
 
 const body = IBM_Plex_Sans({

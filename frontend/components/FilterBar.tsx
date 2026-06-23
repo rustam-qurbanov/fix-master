@@ -32,32 +32,39 @@ export function FilterBar({
   };
 
   const field =
-    "border-0 border-b-2 border-ink/20 bg-transparent px-0 py-1 font-mono text-sm focus:border-signal focus:outline-none";
-  const label = "font-mono text-[11px] uppercase tracking-wider text-steel";
+    "w-full rounded-xl border border-border-main bg-paper px-3 py-2.5 text-sm text-ink focus:border-signal focus:ring-2 focus:ring-signal/15 focus:outline-none transition-all duration-200 appearance-none";
+  const label = "block text-[11px] font-bold uppercase tracking-wider text-steel mb-1.5";
 
   return (
-    <div className="ticket grid grid-cols-2 gap-x-6 gap-y-4 p-5 sm:grid-cols-5 sm:items-end">
+    <div className="ticket grid grid-cols-2 gap-x-6 gap-y-5 p-6 sm:grid-cols-5 sm:items-end">
       <div className="col-span-2 sm:col-span-1">
         <label className={label}>Категория</label>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className={`${field} w-full`}
-        >
-          <option value="">Все</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className={field}
+          >
+            <option value="">Все категории</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-steel">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+            </svg>
+          </div>
+        </div>
       </div>
       <div>
         <label className={label}>Город</label>
         <input
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className={`${field} w-full`}
+          className={field}
           placeholder="Алматы"
         />
       </div>
@@ -67,7 +74,8 @@ export function FilterBar({
           type="number"
           value={priceMin}
           onChange={(e) => setPriceMin(e.target.value)}
-          className={`${field} w-full`}
+          className={field}
+          placeholder="0"
         />
       </div>
       <div>
@@ -76,13 +84,14 @@ export function FilterBar({
           type="number"
           value={priceMax}
           onChange={(e) => setPriceMax(e.target.value)}
-          className={`${field} w-full`}
+          className={field}
+          placeholder="До"
         />
       </div>
       <button
         onClick={apply}
-        className={`bg-signal px-4 py-2 font-display font-bold uppercase tracking-wide text-paper transition active:scale-95 ${
-          pressed ? "scale-95" : ""
+        className={`w-full bg-signal hover:bg-signal/95 text-paper font-display font-extrabold uppercase tracking-wider rounded-xl py-3 transition-all duration-200 active:scale-97 shadow-sm hover:shadow-md hover:shadow-signal/15 ${
+          pressed ? "scale-97" : ""
         }`}
       >
         Найти
@@ -90,3 +99,4 @@ export function FilterBar({
     </div>
   );
 }
+
