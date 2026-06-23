@@ -17,7 +17,9 @@ frontend/.next/
 .gstack-src/
 .gbrain/
 
-# project-local Claude Code skills (symlinks into .gstack-src/, would dangle in other clones)
+# project-local Claude Code and Antigravity skills (symlinks that would dangle in other clones)
 .claude/
+.agents/
 skills-lock.json
 .DS_Store
+
