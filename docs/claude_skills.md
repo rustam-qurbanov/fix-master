@@ -4,6 +4,27 @@
 
 ---
 
+## 👷 Постоянные субагенты проекта (`.claude/agents/`)
+
+Файлы-определения лежат в `.claude/agents/` и закоммичены в git (в отличие от `.claude/skills/` — это symlink'и на gstack, они в `.gitignore`). Каждый — markdown с YAML frontmatter (`name`, `description`, `tools`, `model`) + системный промпт. Claude сам решает, когда делегировать, по полю `description`; можно и вызвать явно.
+
+| Агент | Когда используется | Доступ к инструментам | Преднагруженные скиллы (`skills:` в frontmatter) |
+|---|---|---|---|
+| **`frontend-engineer`** | Любая работа над `frontend/` — компоненты, страницы, стили, типы | Полный (наследует) | `frontend-design`, `webapp-testing`, `design-review` (gstack), `ui-ux-pro-max`, `react-best-practices` (Vercel), `composition-patterns` (Vercel) |
+| **`backend-engineer`** | Любая работа над `backend/` — роуты FastAPI, модели, миграции Alembic | Полный (наследует) | `test-driven-development`, `systematic-debugging` *(нет специфичного FastAPI-скилла — это общие инженерные)* |
+| **`security-auditor`** | Перед мерджем auth-кода, перед подключением реального Supabase, по запросу аудита | Только чтение: `Read, Grep, Glob, Bash` (без `Write`/`Edit` — он только репортит находки) | `cso` (gstack, OWASP + STRIDE) |
+| **`qa-engineer`** | После того как `frontend-engineer`/`backend-engineer` закончили фичу — сквозное тестирование UI + API | `Read, Grep, Glob, Bash, Write, WebFetch` (без `Edit` — пишет новые файлы/отчёты, но не правит исходники) | `senior-aqa-engineer`, `webapp-testing`, `qa-only` (gstack), `verification-before-completion` |
+
+`skills:` во frontmatter — это **преднагрузка**: полный текст скилла инжектится в системный промпт агента при старте, а не просто доступен по требованию. Это отдельная официальная фича: [Configure subagents → skills field](https://code.claude.com/docs/en/sub-agents#supported-frontmatter-fields).
+
+`ui-ux-pro-max` — не часть superpowers и не gstack: вручную установлен **глобально** в `~/.claude/skills/ui-ux-pro-max/` из [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (доступен во всех проектах, не только в этом). Design-intelligence база — 67 стилей, 161 цветовая палитра, 57 пар шрифтов, accessibility/touch/animation/forms-чеклисты; запрашивается через `python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py "<запрос>" --domain <style|color|typography|ux|...>` (требует `python3`, данные — CSV в `data/`).
+
+`react-best-practices` и `composition-patterns` — тоже вручную установлены **глобально** в `~/.claude/skills/`, из [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills) (внутри `name:` — `vercel-react-best-practices`/`vercel-composition-patterns`, но идентификатор для `skills:` во frontmatter — **имя директории**, не внутреннее поле). Первый — 70 правил перфоманса React/Next.js от Vercel Engineering, второй — паттерны композиции компонентов (избегание boolean-prop-проliferation, React 19 API).
+
+Полную инструкцию по делегированию (когда вызывать агента, как изолировать задачу) см. `ORCHESTRATOR.md` §5. Официальная документация механизма: [Create custom subagents](https://code.claude.com/docs/en/sub-agents).
+
+---
+
 ## 🧩 Встроенные скиллы (superpowers)
 
 Уже были до gstack, работают во всех твоих проектах.

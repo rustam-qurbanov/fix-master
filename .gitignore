@@ -18,7 +18,8 @@ frontend/.next/
 .gbrain/
 
 # project-local Claude Code and Antigravity skills (symlinks that would dangle in other clones)
-.claude/
+.claude/*
+!.claude/agents/
 .agents/
 skills-lock.json
 .DS_Store

@@ -9,9 +9,15 @@ For any non-trivial user request, the Orchestrator must follow the **Think → P
 
 1.  **Think**: Analyze the request, identify affected components, and determine requirements.
 2.  **Plan**: Draft an `implementation_plan.md` outlining the proposed changes, architectural impact, and risks. Ask for user approval before modifying code.
+    *   **Cut vertically, not horizontally**: break the plan into "tracer bullet" slices that each cross every layer (DB → API → UI) for one piece of functionality and produce something end-to-end testable, rather than phases like "all models, then all routes, then all pages." Horizontal phases hide integration bugs (e.g. a frontend/backend field mismatch) until the very end, when they're most expensive to fix.
 3.  **Execute**: Implement changes incrementally. Do not write monolithic blocks of code all at once.
 4.  **Verify**: Run tests, check compilation, and perform manual or automated QA.
 5.  **Reflect**: Analyze the changes, evaluate regressions, record lessons learned, and update documentation.
+
+### 1.1. Model-Specific Environments
+For instructions on configuring specific AI models and using their custom tools, refer to:
+*   👉 **[GEMINI.md](./GEMINI.md)**
+*   👉 **[CLAUDE.md](./CLAUDE.md)**
 
 ---
 
@@ -54,6 +60,11 @@ For any non-trivial user request, the Orchestrator must follow the **Think → P
 *   **Official Docs**: Base integrations and code syntax on official framework/library documentation. Do not guess API endpoints or model identifiers.
 *   **Incremental Changes**: Implement features step-by-step. Verify compilation and run tests at each step rather than rewriting large sections of the codebase at once.
 *   **No Overengineering**: Focus strictly on the requirements. Do not add unused libraries, speculative database columns, or future-proof abstractions.
+
+### 3.6. Session Hygiene
+*   **New unrelated task → new session**: Don't continue an unrelated task in a session that's already deep into a different one (e.g. don't debug backend auth in the same thread that just spent an hour on frontend redesign) — stale context from the prior task degrades focus on the new one.
+*   **Watch the context budget**: long-running sessions accumulate cruft (superseded edits, resolved tool errors, abandoned approaches). When a session has clearly grown large, prefer starting fresh for the next independent task over continuing indefinitely in the same thread.
+*   **Compact with intent, don't just let it happen**: when summarizing/compacting a long session, state explicitly what must survive (open decisions, unresolved blockers, file paths already verified) rather than trusting a generic summary to keep what matters.
 
 ---
 
@@ -118,3 +129,10 @@ Architectural and delegation rules in this document are derived from, and should
 *   [Claude Agent Skills Specification](https://agentskills.io/specification) — `SKILL.md` format, `name`/`description` requirements.
 *   [Google Antigravity Documentation — Skills](https://antigravity.google/docs/skills) — `.agents/skills/` directory structure, skill discovery/activation.
 *   [Gemini API Documentation — Models](https://ai.google.dev/gemini-api/docs/models) — current model IDs; verify before hardcoding any model string.
+
+### 6.1. Internal Repository Reference Files
+When exploring the project architecture, features, and roadmaps, refer to these internal files:
+*   👉 **[Project Checklist / Status](./docs/checklist.md)** — Track MVP status and future work items.
+*   👉 **[Antigravity SDK Guide](./docs/antigravity_sdk_guide.md)** — Guidelines for writing agents in Python.
+*   👉 **[Claude CLI Skills](./docs/claude_skills.md)** — Local slash-commands and gstack skills.
+*   👉 **[Gemini IDE Skills](./docs/gemini_skills.md)** — Local Antigravity plugins and skills.

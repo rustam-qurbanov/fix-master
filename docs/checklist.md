@@ -40,4 +40,12 @@
 - [ ] Переход на React Native для iOS/Android
 
 ### Команда ИИ-агентов
-- [ ] Настроить роли агентов (architect/backend/frontend/reviewer/QA) для параллельной работы Claude Code + Antigravity
+- [x] Настроить роли агентов (`frontend-engineer`, `backend-engineer`, `security-auditor`, `qa-engineer` в `.claude/agents/`) — см. `docs/claude_skills.md`
+- [x] Общая доска задач для координации агентов — добавлен доступ к `TaskList`/`TaskGet`/`TaskUpdate` всем четырём агентам (ранее `security-auditor`/`qa-engineer` его не видели)
+- [ ] Общая память агентов в духе [`claude-mem`](https://github.com/thedotmack/claude-mem) (hooks + SQLite + Chroma vector DB, MCP-поиск по истории сессий) — решить: ставить реальный пакет или писать свой аналог под FixMaster; обсудить Obsidian-визуализацию отдельно, т.к. у claude-mem её нет из коробки
+- [ ] Decision log по агентам — лёгкий markdown-отчёт о принятых решениях (что сделано и почему, например "поменял цвет кнопки, т.к. сливалась с фоном"), читаемый через Obsidian как vault
+
+### Скиллы — скачать позже, когда дойдём до соответствующего этапа
+- [ ] [`deploy-to-vercel`](https://github.com/vercel-labs/agent-skills/tree/main/skills/deploy-to-vercel) — когда начнём реальный деплой фронтенда на Vercel
+- [ ] [`vercel-cli-with-tokens`](https://github.com/vercel-labs/agent-skills/tree/main/skills/vercel-cli-with-tokens) — деплой/управление через Vercel CLI с токенами, тоже к этапу деплоя
+- [ ] [`vercel-optimize`](https://github.com/vercel-labs/agent-skills/tree/main/skills/vercel-optimize) — анализ бандла/перфоманса уже собранного приложения, имеет смысл после того как фичи стабилизируются, не во время активной разработки MVP
